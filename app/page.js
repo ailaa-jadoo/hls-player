@@ -116,9 +116,9 @@ const HomePage = () => {
                     </form>
                 </div>
                 
-                <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4">
-                    {/* Video Player - Always on top in mobile */}
-                    <div className="lg:col-span-2">
+                <div className={`flex flex-col ${showChat ? 'lg:grid lg:grid-cols-3' : ''} gap-4`}>
+                    {/* Video Player - Always on top in mobile, expands when chat is hidden */}
+                    <div className={`${showChat ? 'lg:col-span-2' : 'w-full'}`}>
                         {submittedUrl ? (
                             <div className="mb-4">
                                 <VideoPlayer videoUrl={submittedUrl} />
