@@ -80,7 +80,7 @@ const HomePage = () => {
         <div className="min-h-screen bg-gray-900 text-white">
             <header className="bg-gray-800 border-b border-gray-700 p-4 shadow-md sticky top-0 z-10">
                 <div className="max-w-7xl mx-auto flex justify-between items-center">
-                    <h1 className="text-xl font-bold text-blue-400">HLS Video Player</h1>
+                    <a href='/' className="text-xl font-bold text-blue-400">HLS Video Player</a>
                     <div className="flex items-center gap-3">
                         {streamId && (
                             <span className="text-xs bg-blue-900 px-2 py-1 rounded">
@@ -120,7 +120,7 @@ const HomePage = () => {
                     {/* Video Player - Always on top in mobile, expands when chat is hidden */}
                     <div className={`${showChat ? 'lg:col-span-2' : 'w-full'}`}>
                         {submittedUrl ? (
-                            <div className="mb-4">
+                            <div className="">
                                 <VideoPlayer videoUrl={submittedUrl} />
                             </div>
                         ) : (
@@ -132,24 +132,6 @@ const HomePage = () => {
                                 <p className="mt-2 text-sm">Supports .m3u8 live and VOD streams</p>
                             </div>
                         )}
-                        
-                        {/* Recent URLs */}
-                        {historyUrls.length > 0 && (
-                            <div className="bg-gray-800 p-4 rounded-lg shadow-lg mb-4 lg:mb-0 border border-gray-700">
-                                <h2 className="text-md font-medium text-gray-300 mb-2">Recent URLs</h2>
-                                <div className="space-y-1">
-                                    {historyUrls.map((url, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => selectHistoryUrl(url)}
-                                            className="text-xs block w-full text-left truncate p-2 hover:bg-gray-700 rounded text-blue-300 transition-colors"
-                                        >
-                                            {url}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
                     </div>
                     
                     {/* Chat Component - Below video in mobile view */}
@@ -158,7 +140,26 @@ const HomePage = () => {
                             <Chat streamId={streamId} />
                         </div>
                     )}
+                    {/* Recent URLs - Now placed outside the grid layout */}
+                    {historyUrls.length > 0 && (
+                        <div className="bg-gray-800 p-4 rounded-lg shadow-lg mt-4 border border-gray-700 lg:col-span-2">
+                            <h2 className="text-md font-medium text-gray-300 mb-2">Recent URLs</h2>
+                            <div className="space-y-1">
+                                {historyUrls.map((url, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => selectHistoryUrl(url)}
+                                        className="text-xs block w-full text-left truncate p-2 hover:bg-gray-700 rounded text-blue-300 transition-colors"
+                                    >
+                                        {url}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
+
+                
             </main>
             
             <footer className="mt-6 border-t border-gray-700 p-4 text-center text-gray-500 text-sm">

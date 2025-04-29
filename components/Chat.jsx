@@ -55,6 +55,7 @@ const Chat = ({ streamId }) => {
       try {
         const data = JSON.parse(event.data);
         
+        // Handle initial data load (batch of past messages)
         if (data.t === "d" && data.d && data.d.b && data.d.b.d) {
           const chatData = data.d.b.d;
           
@@ -89,7 +90,37 @@ const Chat = ({ streamId }) => {
             });
           }
         }
+        
+        // Handle live message updates
+        if (data.t === "d" && data.d && data.d.b && data.d.b.p && data.d.b.d) {
+          // Extract the message ID from the path
+          const pathParts = data.d.b.p.split('/');
+          const messageId = pathParts[pathParts.length - 1];
+          
+          // Check if the path contains "youtubedata" to ensure it's a chat message
+          if (data.d.b.p.includes('youtubedata') && data.d.b.d.userComment) {
+            const msg = data.d.b.d;
+            
+            const newMessage = {
+              id: messageId,
+              text: msg.userComment,
+              sender: msg.userName || "Anonymous",
+              timestamp: msg.userTime || new Date(msg.postedAt).toLocaleTimeString(),
+              postedAt: msg.postedAt
+            };
+            
+            setMessages(prevMessages => {
+              // Check if message already exists (avoid duplicates)
+              const exists = prevMessages.some(m => m.id === messageId);
+              if (!exists) {
+                return [...prevMessages, newMessage].sort((a, b) => a.postedAt - b.postedAt);
+              }
+              return prevMessages;
+            });
+          }
+        }
       } catch (error) {
+        console.error("Error processing message:", error);
         setError('Error processing message');
       }
     };
@@ -230,15 +261,15 @@ const Chat = ({ streamId }) => {
               key={msg.id} 
               className={`p-2 rounded-lg max-w-[85%] ${
                 msg.sender === 'You' 
-                  ? 'bg-blue-700 ml-auto' 
+                  ? 'bg-gray-500 ml-auto' 
                   : 'bg-gray-700 mr-auto'
-              } shadow-sm`}
+              } shadow-sm`} 
             >
               <div className="flex justify-between items-start mb-1">
-                <span className={`font-medium text-sm ${msg.sender === 'You' ? 'text-blue-200' : 'text-gray-300'}`}>
+                <span className={`font-bold text-sm ${msg.sender === 'You' ? 'text-black' : 'text-yellow-500'}`}>
                   {msg.sender}
                 </span>
-                <span className="text-xs text-gray-400 ml-2">{msg.timestamp}</span>
+                <span className="text-xs text-yellow-500 ml-2">{msg.timestamp}</span>
               </div>
               <p className="text-sm break-words">{msg.text}</p>
             </div>
