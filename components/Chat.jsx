@@ -10,6 +10,7 @@ const Chat = ({ streamId }) => {
   const lastActivityRef = useRef(Date.now());
   const keepAliveTimerRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null); // Added ref for the chat container
   const userId = useRef(`user_${Math.floor(Math.random() * 10000)}`);
 
   useEffect(() => {
@@ -168,9 +169,11 @@ const Chat = ({ streamId }) => {
     };
   }, [streamId]);
   
+  // Modified scrolling logic - only scroll the chat container, not the entire page
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (chatContainerRef.current) {
+      // Scroll the chat container to the bottom
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
@@ -248,7 +251,11 @@ const Chat = ({ streamId }) => {
         </div>
       )}
       
-      <div className="flex-1 overflow-y-auto mb-3 space-y-2 custom-scrollbar px-1">
+      {/* Added ref to the chat container */}
+      <div 
+        ref={chatContainerRef} 
+        className="flex-1 overflow-y-auto mb-3 space-y-2 custom-scrollbar px-1"
+      >
         {messages.length === 0 ? (
           <div className="text-gray-500 text-center p-4 flex items-center justify-center h-full">
             <div>
@@ -275,6 +282,7 @@ const Chat = ({ streamId }) => {
             </div>
           ))
         )}
+        {/* You can remove this or keep it - it won't cause page scrolling anymore */}
         <div ref={messagesEndRef} />
       </div>
       

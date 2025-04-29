@@ -124,7 +124,7 @@ const HomePage = () => {
                                 <VideoPlayer videoUrl={submittedUrl} />
                             </div>
                         ) : (
-                            <div className="flex flex-col items-center justify-center py-16 text-gray-500 bg-gray-800 rounded-lg mb-4 border border-gray-700">
+                            <div className="flex flex-col items-center justify-center h-full text-gray-500 bg-gray-800 rounded-lg mb-4 border border-gray-700">
                                 <svg className="w-16 h-16 mb-4" fill="currentColor" viewBox="0 0 20 20">
                                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
                                 </svg>
